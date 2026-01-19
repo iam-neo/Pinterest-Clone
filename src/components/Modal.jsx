@@ -57,11 +57,16 @@ const LightboxModal = ({ image, onClose }) => {
                         </div>
 
                         <div style={styles.scrollableContent}>
-                            <h2 style={styles.title}>{image.alt}</h2>
+                            <h2 style={styles.title}>{image.title || image.alt}</h2>
                             <p style={styles.description}>
-                                Uploaded by <strong>{image.user.name}</strong>.
-                                This is a sample description for the image showing {image.tags.join(', ')}.
+                                {image.description}
                             </p>
+                            {!image.description && (
+                                <p style={styles.description}>
+                                    Uploaded by <strong>{image.user.name}</strong>.
+                                    {image.tags.length > 0 && ` Tags: ${image.tags.join(', ')}`}
+                                </p>
+                            )}
 
                             {/* Comments Section Placeholder */}
                             <div style={{ marginTop: '24px' }}>

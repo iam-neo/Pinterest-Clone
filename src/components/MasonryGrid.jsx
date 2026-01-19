@@ -10,7 +10,7 @@ const MasonryGrid = ({ items, onImageClick }) => {
     useEffect(() => {
         const handleResize = () => {
             const width = window.innerWidth;
-            if (width < 600) setColumnCount(1);       // Mobile
+            if (width < 600) setColumnCount(2);       // Mobile (Pinterest style)
             else if (width < 900) setColumnCount(3);  // Tablet
             else if (width < 1200) setColumnCount(4); // Small Desktop
             else setColumnCount(5);                   // Large Desktop

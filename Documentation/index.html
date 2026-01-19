@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinterest Gallery Documentation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <aside>
+        <div class="logo">
+            <img src="../public/images/logo/logo.png" alt="Logo" style="height:32px;">
+            <span>Docs</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#introduction" class="active">Introduction</a></li>
+                <li><a href="#structure">Project Structure</a></li>
+                <li><a href="#how-it-works">How Code Works</a></li>
+                <li><a href="#customization">Manage Images</a></li>
+                <li><a href="#components">Modifying Code</a></li>
+                <li><a href="#deployment">Deployment</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main>
+        <section id="introduction">
+            <h1>Pinterest-Style Gallery Documentation</h1>
+            <p>Welcome to the comprehensive documentation for your premium React Masonry Gallery. This project mimicks
+                Pinterest's dynamic grid layout and features a beautiful, responsive UI.</p>
+
+            <div class="note">
+                <strong>Tech Stack:</strong> React 18, Vite, CSS Modules, Vanilla JS.
+            </div>
+        </section>
+
+        <section id="structure">
+            <h2>📂 Project Structure</h2>
+            <div class="tree">
+                gallery/<br>
+                ├── public/<br>
+                │ ├── images/ (Source images)<br>
+                │ │ └── logo/ (Brand assets)<br>
+                │ └── _redirects (Netlify routing)<br>
+                ├── src/<br>
+                │ ├── components/ (UI Building Blocks)<br>
+                │ ├── hooks/ (Layout Logic)<br>
+                │ └── utils/ (Data Configuration)<br>
+                ├── Documentation/ (You are here)<br>
+                └── netlify.toml (Build config)<br>
+            </div>
+        </section>
+
+        <section id="how-it-works">
+            <h2>⚙️ How Code Works</h2>
+            <h3>The Masonry Layout</h3>
+            <p>Unlike standard CSS grids, this project uses a specialized hook <code>useMasonry.js</code>. It calculates
+                the height of each column and places the next image into the <strong>shortest column</strong> available.
+                This eliminates gaps and creates that signature "staggered" Pinterest look.</p>
+
+            <h3>Data Management</h3>
+            <p>We do not use a complex backend. Instead, we map local files to a JavaScript object in
+                <code>customImages.js</code>. This acts as our "database".</p>
+        </section>
+
+        <section id="customization">
+            <h2>🖼️ How to Change Images</h2>
+            <p>To add or modify images, follow these simple steps:</p>
+
+            <h3>1. Add Files</h3>
+            <p>Drop your <code>.jpg</code> or <code>.png</code> files into the <code>public/images/</code> folder.</p>
+
+            <h3>2. Register Image</h3>
+            <p>Open <code>src/utils/customImages.js</code> and add a new entry:</p>
+            <pre><code>{
+  id: 'new-img-1',
+  url: '/images/your-photo.jpg',
+  width: 800,   // Approximate width
+  height: 600,  // Approximate height
+  title: 'My Custom Title',
+  description: 'Description for the modal...',
+  user: neoUser // Points to the shared 'Neo' user
+}</code></pre>
+
+            <div class="note">
+                <strong>Tip:</strong> You can change the global user (Name/Avatar) by editing the <code>neoUser</code>
+                object at the top of <code>customImages.js</code>.
+            </div>
+        </section>
+
+        <section id="components">
+            <h2>🛠️ How to Modify Code</h2>
+
+            <h3>Visual & Styling</h3>
+            <p>Global styles are in <code>src/index.css</code>. This file controls:</p>
+            <ul>
+                <li>Color variables (<code>--color-primary</code>)</li>
+                <li>Fonts and typography</li>
+                <li>Card hover animations</li>
+            </ul>
+
+            <h3>Components</h3>
+            <ul>
+                <li><strong>Header.jsx:</strong> Top navigation and Search bar.</li>
+                <li><strong>MasonryGrid.jsx:</strong> Calculates columns and renders the grid.</li>
+                <li><strong>ImageCard.jsx:</strong> Individual image item. (Note: Logic is hidden here to keep grid
+                    clean!)</li>
+                <li><strong>Modal.jsx:</strong> The popup lightbox showing full details.</li>
+            </ul>
+        </section>
+
+        <section id="deployment">
+            <h2>🚀 Deployment</h2>
+            <p>This project is optimized for <strong>Netlify</strong>.</p>
+
+            <h3>Important Files</h3>
+            <ul>
+                <li><code>netlify.toml</code>: Tells Netlify to build using <code>npm run build</code>.</li>
+                <li><code>public/_redirects</code>: Prevents "Page Not Found" errors on refresh.</li>
+                <li><code>.gitignore</code>: Ensures system files don't break the Linux build server.</li>
+            </ul>
+
+            <h3>How to Update Live Site</h3>
+            <ol>
+                <li>Run <code>npm run build</code> in your terminal.</li>
+                <li>This creates a <strong>dist</strong> folder.</li>
+                <li>Drag & drop the <strong>dist</strong> folder to your Netlify dashboard.</li>
+            </ol>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
