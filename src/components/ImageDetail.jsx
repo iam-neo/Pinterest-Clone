@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaHeart, FaShare, FaArrowLeft } from 'react-icons/fa';
 import MasonryGrid from './MasonryGrid';
 import { customImages } from '../utils/customImages';
 
 const ImageDetail = ({ image, onBack, onImageClick }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+
     // Scroll to top when image changes
     useEffect(() => {
         window.scrollTo(0, 0);
+        setIsExpanded(false); // Reset expansion on image change
     }, [image]);
 
     if (!image) return null;
@@ -16,6 +19,13 @@ const ImageDetail = ({ image, onBack, onImageClick }) => {
         img.id !== image.id &&
         img.tags.some((tag) => image.tags.includes(tag))
     );
+
+    // Truncate logic
+    const MAX_LENGTH = 150;
+    const shouldTruncate = image.description && image.description.length > MAX_LENGTH;
+    const displayDescription = isExpanded || !shouldTruncate
+        ? image.description
+        : `${image.description.slice(0, MAX_LENGTH)}...`;
 
     return (
         <div style={styles.container}>
@@ -46,9 +56,19 @@ const ImageDetail = ({ image, onBack, onImageClick }) => {
 
                         <div style={styles.infoContent}>
                             <h2 style={styles.title}>{image.title || image.alt}</h2>
-                            <p style={styles.description}>
-                                {image.description}
-                            </p>
+
+                            <div style={styles.description}>
+                                {displayDescription}
+                                {shouldTruncate && (
+                                    <button
+                                        onClick={() => setIsExpanded(!isExpanded)}
+                                        style={styles.readMoreBtn}
+                                    >
+                                        {isExpanded ? 'Show less' : 'Read more'}
+                                    </button>
+                                )}
+                            </div>
+
                             {!image.description && (
                                 <p style={styles.description}>
                                     Uploaded by <strong>{image.user.name}</strong>.
@@ -91,6 +111,7 @@ const styles = {
         minHeight: '100vh',
         backgroundColor: '#fff',
         padding: '20px',
+        boxSizing: 'border-box' // Ensure padding doesn't cause overflow
     },
     backBtn: {
         display: 'flex',
@@ -118,7 +139,8 @@ const styles = {
     },
     imageContainer: {
         flex: 1,
-        minWidth: '400px',
+        minWidth: '300px', // Allow it to shrink on mobile but keep base size
+        flexBasis: '400px', // Preferred size
         backgroundColor: '#fff',
         display: 'flex',
         alignItems: 'center',
@@ -133,8 +155,9 @@ const styles = {
         boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
     },
     details: {
-        width: '400px', // Wider details panel for page view
-        flexShrink: 0,
+        flex: 1, // Allow details to take remaining space
+        minWidth: '300px', // Collapse to stack on small screens
+        flexBasis: '350px',
         display: 'flex',
         flexDirection: 'column',
         padding: '40px',
@@ -163,6 +186,16 @@ const styles = {
         fontSize: '18px',
         color: '#333',
         lineHeight: '1.5'
+    },
+    readMoreBtn: {
+        background: 'none',
+        border: 'none',
+        color: '#111',
+        fontWeight: 'bold',
+        cursor: 'pointer',
+        padding: 0,
+        marginLeft: '5px',
+        textDecoration: 'underline'
     },
     footer: {
         borderTop: '1px solid #efefef',
