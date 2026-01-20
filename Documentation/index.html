@@ -120,7 +120,7 @@
                 <li><strong>Header.jsx:</strong> Top navigation and Search bar.</li>
                 <li><strong>MasonryGrid.jsx:</strong> Calculates columns and renders the grid.</li>
                 <li><strong>ImageCard.jsx:</strong> Individual image item.</li>
-                <li><strong>Modal.jsx:</strong> The popup lightbox showing full details.</li>
+                <li><strong>ImageDetail.jsx:</strong> Inline detail view for images (Replaced Modal.jsx).</li>
             </ul>
         </section>
 
@@ -136,16 +136,18 @@
     img.user.name.toLowerCase().includes(searchQuery.toLowerCase())
 )</code></pre>
 
-            <h3>The Modal & Related Images (Modal.jsx)</h3>
-            <p>The modal handles displaying the selected image. The "Related Images" feature works by filtering the
-                global <code>customImages</code> list for items that share at least one tag with the current image.</p>
+            <h3>The Detail Page & Related Images (ImageDetail.jsx)</h3>
+            <p>Instead of a popup, we render the <code>ImageDetail</code> component inline. This component handles
+                displaying the selected image. The "Related Images" feature works by filtering the global
+                <code>customImages</code> list for items that share at least one tag with the current image.
+            </p>
             <pre><code>// Filter related images based on usage tags
 const relatedImages = customImages.filter((img) => 
     img.id !== image.id && 
     img.tags.some((tag) => image.tags.includes(tag))
 );</code></pre>
-            <p>We then render this list using the <code>MasonryGrid</code> component at the bottom of the modal,
-                ensuring a consistent layout.</p>
+            <p>We then render this list using the <code>MasonryGrid</code> component at the bottom of the page, ensuring
+                a consistent layout.</p>
 
             <h3>Responsive Masonry Grid (MasonryGrid.jsx)</h3>
             <p>The grid automatically adjusts the number of columns based on the window width using a
@@ -187,6 +189,11 @@ const relatedImages = customImages.filter((img) =>
                     - Added "More like this" section to the image modal.<br>
                     - Updated <code>Modal.jsx</code> to filter images by tags.<br>
                     - Expanded documentation with detailed code walkthroughs.
+                </li>
+                <li>
+                    <strong>v1.2.0 - Inline Detail View</strong><br>
+                    - Replaced Popup Modal with <code>ImageDetail.jsx</code> for inline viewing.<br>
+                    - Updated Navigation to support "Back to Gallery" flow.<br>
                 </li>
             </ul>
         </section>

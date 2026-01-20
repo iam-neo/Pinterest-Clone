@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Header from './components/Header'
 import MasonryGrid from './components/MasonryGrid'
-import LightboxModal from './components/Modal'
+import ImageDetail from './components/ImageDetail'
 
 import { customImages } from './utils/customImages'
 
@@ -21,19 +21,19 @@ function App() {
             <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
             <main className="main-content">
-                <MasonryGrid
-                    items={filteredImages}
-                    onImageClick={setSelectedImage}
-                />
+                {selectedImage ? (
+                    <ImageDetail
+                        image={selectedImage}
+                        onBack={() => setSelectedImage(null)}
+                        onImageClick={setSelectedImage}
+                    />
+                ) : (
+                    <MasonryGrid
+                        items={filteredImages}
+                        onImageClick={setSelectedImage}
+                    />
+                )}
             </main>
-
-            {selectedImage && (
-                <LightboxModal
-                    image={selectedImage}
-                    onClose={() => setSelectedImage(null)}
-                    onImageClick={setSelectedImage}
-                />
-            )}
         </div>
     )
 }
