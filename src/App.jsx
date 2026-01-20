@@ -31,6 +31,7 @@ function App() {
                 <LightboxModal
                     image={selectedImage}
                     onClose={() => setSelectedImage(null)}
+                    onImageClick={setSelectedImage}
                 />
             )}
         </div>

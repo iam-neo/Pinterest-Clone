@@ -18,7 +18,7 @@ export const customImages = [
     title: 'Mountain Sunset',
     description: 'A breathtaking view of the mountains during sunset.',
     alt: 'Mountain Sunset',
-    tags: ['nature', 'landscape', 'mointain', 'hill'],
+    tags: ['nature', 'landscape', 'mountain', 'hill'],
     user: neoUser
   },
   {
@@ -26,10 +26,10 @@ export const customImages = [
     url: '/images/1768884507070.jpg',
     width: 800,
     height: 600,
-    title: ' Adiyogi Shiva bust',
+    title: 'Adiyogi Shiva bust',
     description: 'In yogic tradition, Adiyogi refers to Shiva in his form as the First Yogi and the Adi Guru (First Guru). He is credited with originating the science of yoga and transmitting it to his first seven disciples, the Saptarishis, over 15,000 years ago. ',
     alt: 'Adiyogi Shiva bust',
-    tags: ['architecture', 'design', 'Adiyogi', 'Shiva bust', 'Isha Yoga Centre', 'Isha Yoga', 'Yogeshwara Linga', 'Incredible India', 'Ram Nath Kovind', 'moksha', 'liberation', 'chakras', 'human system', 'light and sound show', 'Shiva as a yogi'],
+    tags: ['architecture', 'design', 'Adiyogi', 'Shiva bust', 'Isha Yoga Centre', 'Isha Yoga', 'Yogeshwara Linga', 'Incredible India', 'Ram Nath Kovind', 'moksha', 'liberation', 'chakras', 'human system', 'light and sound show', 'Shiva as a yogi', 'hill', 'mountain', 'statue'],
     user: neoUser
   },
   {

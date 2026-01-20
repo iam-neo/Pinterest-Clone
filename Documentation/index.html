@@ -22,7 +22,9 @@
                 <li><a href="#how-it-works">How Code Works</a></li>
                 <li><a href="#customization">Manage Images</a></li>
                 <li><a href="#components">Modifying Code</a></li>
+                <li><a href="#code-walkthrough">Code Walkthrough</a></li>
                 <li><a href="#deployment">Deployment</a></li>
+                <li><a href="#changelog">Changelog</a></li>
             </ul>
         </nav>
     </aside>
@@ -64,7 +66,16 @@
 
             <h3>Data Management</h3>
             <p>We do not use a complex backend. Instead, we map local files to a JavaScript object in
-                <code>customImages.js</code>. This acts as our "database".</p>
+                <code>customImages.js</code>. This acts as our "database".
+            </p>
+
+            <h3>Related Images Logic</h3>
+            <p>When you open an image, the system automatically finds other pictures that share the same
+                <strong>tags</strong>.
+                This logic happens inside <code>Modal.jsx</code> by filtering the global image list. The results are
+                displayed
+                in a "More like this" grid at the bottom of the modal, keeping users engaged.
+            </p>
         </section>
 
         <section id="customization">
@@ -86,9 +97,10 @@
   user: neoUser // Points to the shared 'Neo' user
 }</code></pre>
 
-            <div class="note">
-                <strong>Tip:</strong> You can change the global user (Name/Avatar) by editing the <code>neoUser</code>
-                object at the top of <code>customImages.js</code>.
+            <strong>Tip:</strong> You can change the global user (Name/Avatar) by editing the <code>neoUser</code>
+            object at the top of <code>customImages.js</code>. <br>
+            <strong>Important:</strong> Ensure you add relevant <code>tags</code> to your images. The "Related Images"
+            feature uses these tags to find and display similar photos.
             </div>
         </section>
 
@@ -107,10 +119,45 @@
             <ul>
                 <li><strong>Header.jsx:</strong> Top navigation and Search bar.</li>
                 <li><strong>MasonryGrid.jsx:</strong> Calculates columns and renders the grid.</li>
-                <li><strong>ImageCard.jsx:</strong> Individual image item. (Note: Logic is hidden here to keep grid
-                    clean!)</li>
+                <li><strong>ImageCard.jsx:</strong> Individual image item.</li>
                 <li><strong>Modal.jsx:</strong> The popup lightbox showing full details.</li>
             </ul>
+        </section>
+
+        <section id="code-walkthrough">
+            <h2>💻 Code Walkthrough</h2>
+            <p>Here is a deep dive into the core logic of the application.</p>
+
+            <h3>Filtering Logic (App.jsx)</h3>
+            <p>The <code>App.jsx</code> defines the filtering mechanism using <code>Array.filter()</code>. It checks if
+                the search query matches either any tag or the user's name.</p>
+            <pre><code>const filteredImages = images.filter(img =>
+    img.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    img.user.name.toLowerCase().includes(searchQuery.toLowerCase())
+)</code></pre>
+
+            <h3>The Modal & Related Images (Modal.jsx)</h3>
+            <p>The modal handles displaying the selected image. The "Related Images" feature works by filtering the
+                global <code>customImages</code> list for items that share at least one tag with the current image.</p>
+            <pre><code>// Filter related images based on usage tags
+const relatedImages = customImages.filter((img) => 
+    img.id !== image.id && 
+    img.tags.some((tag) => image.tags.includes(tag))
+);</code></pre>
+            <p>We then render this list using the <code>MasonryGrid</code> component at the bottom of the modal,
+                ensuring a consistent layout.</p>
+
+            <h3>Responsive Masonry Grid (MasonryGrid.jsx)</h3>
+            <p>The grid automatically adjusts the number of columns based on the window width using a
+                <code>resize</code> event listener.
+            </p>
+            <pre><code>const handleResize = () => {
+    const width = window.innerWidth;
+    if (width < 600) setColumnCount(2);       // Mobile
+    else if (width < 900) setColumnCount(3);  // Tablet
+    else if (width < 1200) setColumnCount(4); // Small Desktop
+    else setColumnCount(5);                   // Large Desktop
+};</code></pre>
         </section>
 
         <section id="deployment">
@@ -130,6 +177,18 @@
                 <li>This creates a <strong>dist</strong> folder.</li>
                 <li>Drag & drop the <strong>dist</strong> folder to your Netlify dashboard.</li>
             </ol>
+        </section>
+
+        <section id="changelog">
+            <h2>📜 Changelog</h2>
+            <ul>
+                <li>
+                    <strong>v1.1.0 - Related Images Feature</strong><br>
+                    - Added "More like this" section to the image modal.<br>
+                    - Updated <code>Modal.jsx</code> to filter images by tags.<br>
+                    - Expanded documentation with detailed code walkthroughs.
+                </li>
+            </ul>
         </section>
     </main>
 
