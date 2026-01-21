@@ -26,7 +26,7 @@ const MasonryGrid = ({ items, onImageClick }) => {
     const columns = useMasonry(items, columnCount);
 
     return (
-        <div style={styles.gridContainer}>
+        <div className="masonry-grid">
             {columns.map((col, colIndex) => (
                 <div key={colIndex} style={styles.column}>
                     {col.map((item) => (
@@ -43,12 +43,7 @@ const MasonryGrid = ({ items, onImageClick }) => {
 };
 
 const styles = {
-    gridContainer: {
-        display: 'flex',
-        gap: '16px',
-        justifyContent: 'center',
-        paddingBottom: '40px',
-    },
+    // gridContainer moved to CSS .masonry-grid
     column: {
         display: 'flex',
         flexDirection: 'column',

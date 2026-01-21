@@ -30,6 +30,27 @@ const LightboxModal = ({ image, onClose, onImageClick }) => {
         img.tags.some((tag) => image.tags.includes(tag))
     );
 
+    const handleShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: image.title || 'Pinterest Clone Image',
+                    text: image.description || 'Check out this image!',
+                    url: image.url,
+                });
+            } catch (error) {
+                console.error('Error sharing:', error);
+            }
+        } else {
+            try {
+                await navigator.clipboard.writeText(image.url);
+                alert('Link copied to clipboard!');
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
+        }
+    };
+
     return (
         <div
             style={styles.backdrop}
@@ -59,7 +80,7 @@ const LightboxModal = ({ image, onClose, onImageClick }) => {
                         <div className="modal-details" style={styles.details}>
                             <div style={styles.header}>
                                 <div style={styles.iconActions}>
-                                    <button className="btn-icon"><FaShare /></button>
+                                    <button className="btn-icon" onClick={handleShare}><FaShare /></button>
                                     <button className="btn-icon"><FaHeart /></button>
                                 </div>
                                 <button className="btn btn-primary" onClick={() => alert('Saved!')}>Save</button>
@@ -179,7 +200,7 @@ const styles = {
     },
     details: {
         width: '360px', // Fixed width side panel
-        minWidth: '300px',
+        minWidth: '300px', // Will be overridden by media query in CSS
         flexShrink: 0,
         display: 'flex',
         flexDirection: 'column',

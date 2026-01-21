@@ -11,6 +11,28 @@ const ImageCard = ({ image, onClick }) => {
     // Calculate aspect ratio for inline style to prevent layout shift
     const aspectRatio = (image.height / image.width) * 100;
 
+    const handleShare = async (e) => {
+        e.stopPropagation();
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: image.title || 'Pinterest Clone Image',
+                    text: image.description || 'Check out this image!',
+                    url: image.url,
+                });
+            } catch (error) {
+                console.error('Error sharing:', error);
+            }
+        } else {
+            try {
+                await navigator.clipboard.writeText(image.url);
+                alert('Link copied to clipboard!');
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
+        }
+    };
+
     return (
         <div style={{ marginBottom: '24px', breakInside: 'avoid' }}>
             <div
@@ -84,7 +106,7 @@ const ImageCard = ({ image, onClick }) => {
                                 <MdDownload />
                             </a>
                             <div style={{ display: 'flex', gap: '8px' }}>
-                                <button className="btn-icon" style={{ width: 32, height: 32 }} onClick={(e) => e.stopPropagation()}>
+                                <button className="btn-icon" style={{ width: 32, height: 32 }} onClick={handleShare}>
                                     <FaShare size={14} />
                                 </button>
                                 <button className="btn-icon" style={{ width: 32, height: 32 }} onClick={(e) => e.stopPropagation()}>
