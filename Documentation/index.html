@@ -185,10 +185,42 @@ const relatedImages = customImages.filter((img) =>
             <h2>📜 Changelog</h2>
             <ul>
                 <li>
-                    <strong>v1.1.0 - Related Images Feature</strong><br>
-                    - Added "More like this" section to the image modal.<br>
-                    - Updated <code>Modal.jsx</code> to filter images by tags.<br>
-                    - Expanded documentation with detailed code walkthroughs.
+                    <strong>v1.4.0 - Image Detail Layout Refactoring (2026-01-21)</strong><br>
+                    <strong>Description Layout Changes:</strong><br>
+                    - Moved image description from inside the image overlay to outside the image frame for better
+                    readability.<br>
+                    - Title remains overlaid on the image with gradient background for visual impact.<br>
+                    - Added duplicate title heading above the description (outside image frame) for clarity.<br>
+                    - Description now displays in a clean white container with proper padding and spacing.<br>
+                    <br>
+                    <strong>Responsive Grid Improvements:</strong><br>
+                    - Updated <code>MasonryGrid.jsx</code> to support customizable column counts via props.<br>
+                    - Main gallery now shows 2 columns on mobile (previously 1) for better browsing experience.<br>
+                    - Suggested images sidebar limited to 1-2 columns for larger, more visible thumbnails.<br>
+                    - Added <code>initialColumns</code> and <code>maxColumns</code> props for flexible grid
+                    configuration.<br>
+                    <br>
+                    <strong>Mobile Title Optimization:</strong><br>
+                    - Added responsive CSS to decrease overlay title size on mobile devices.<br>
+                    - Desktop: 32px title size (large and prominent).<br>
+                    - Mobile: 20px title size (better fit for smaller screens).<br>
+                    - Added <code>.overlay-title-text</code> class for media query targeting.<br>
+                    <br>
+                    <strong>Styling Enhancements:</strong><br>
+                    - Added <code>descriptionContainer</code> and <code>descriptionTitle</code> styles.<br>
+                    - Updated <code>imageContainer</code> to use flexbox column layout.<br>
+                    - Changed overflow from 'hidden' to 'visible' to accommodate external description.<br>
+                    - Added Pinterest red (#e60023) color to "Read more" button for emphasis.<br>
+                    <br>
+                    <strong>Files Modified:</strong><br>
+                    - <code>src/components/ImageDetail.jsx</code> - Layout restructuring and new styles.<br>
+                    - <code>src/components/MasonryGrid.jsx</code> - Added prop-based column configuration.<br>
+                    - <code>src/index.css</code> - Added mobile responsive title styling.<br>
+                </li>
+                <li>
+                    <strong>v1.3.0 - Mobile Optimization</strong><br>
+                    - Made Detail View responsive with flexbox layout.<br>
+                    - Added "Read more" truncation for long image descriptions.<br>
                 </li>
                 <li>
                     <strong>v1.2.0 - Inline Detail View</strong><br>
@@ -196,9 +228,10 @@ const relatedImages = customImages.filter((img) =>
                     - Updated Navigation to support "Back to Gallery" flow.<br>
                 </li>
                 <li>
-                    <strong>v1.3.0 - Mobile Optimization</strong><br>
-                    - Made Detail View responsive with flexbox layout.<br>
-                    - Added "Read more" truncation for long image descriptions.<br>
+                    <strong>v1.1.0 - Related Images Feature</strong><br>
+                    - Added "More like this" section to the image modal.<br>
+                    - Updated <code>Modal.jsx</code> to filter images by tags.<br>
+                    - Expanded documentation with detailed code walkthroughs.
                 </li>
             </ul>
         </section>
