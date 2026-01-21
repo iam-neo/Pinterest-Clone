@@ -29,19 +29,21 @@ const ImageDetail = ({ image, onBack, onImageClick }) => {
 
     // Share handler
     const handleShare = async () => {
+        const shareUrl = new URL(image.url, window.location.origin).href;
+
         if (navigator.share) {
             try {
                 await navigator.share({
                     title: image.title || 'Pinterest Clone Image',
                     text: image.description || 'Check out this image!',
-                    url: image.url,
+                    url: shareUrl,
                 });
             } catch (error) {
                 console.error('Error sharing:', error);
             }
         } else {
             try {
-                await navigator.clipboard.writeText(image.url);
+                await navigator.clipboard.writeText(shareUrl);
                 alert('Link copied to clipboard!');
             } catch (err) {
                 console.error('Failed to copy text: ', err);
