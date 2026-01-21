@@ -31,17 +31,34 @@ const ImageDetail = ({ image, onBack, onImageClick }) => {
     const handleShare = async () => {
         const shareUrl = new URL(image.url, window.location.origin).href;
 
-        if (navigator.share) {
-            try {
+        try {
+            // Try to fetch image and share as file (best for "thumbnail" experience)
+            if (navigator.share) {
+                const response = await fetch(image.url);
+                const blob = await response.blob();
+                const file = new File([blob], 'image.jpg', { type: blob.type });
+
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        title: image.title || 'Pinterest Clone Image',
+                        text: `${image.description || 'Check out this image!'} ${shareUrl}`,
+                        files: [file]
+                    });
+                    return; // Success
+                }
+
+                // Fallback to link only if file share not supported
                 await navigator.share({
                     title: image.title || 'Pinterest Clone Image',
                     text: image.description || 'Check out this image!',
                     url: shareUrl,
                 });
-            } catch (error) {
-                console.error('Error sharing:', error);
+            } else {
+                // Desktop/No-Navigator fallback
+                throw new Error('Web Share API not supported');
             }
-        } else {
+        } catch (error) {
+            console.log('Falling back to clipboard', error);
             try {
                 await navigator.clipboard.writeText(shareUrl);
                 alert('Link copied to clipboard!');
