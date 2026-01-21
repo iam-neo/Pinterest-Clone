@@ -77,29 +77,32 @@ const ImageDetail = ({ image, onBack, onImageClick }) => {
 
             <div style={styles.card}>
                 <div style={styles.layout}>
-                    {/* Image Side */}
+                    {/* Image Side (Left) - NOW "HERO" */}
                     <div style={styles.imageContainer}>
-                        <img
-                            src={image.url}
-                            alt={image.alt}
-                            style={styles.image}
-                        />
-                    </div>
+                        <div style={{ position: 'relative', display: 'inline-block', maxWidth: '100%', margin: '0 auto', width: '100%' }}>
+                            <img
+                                src={image.url}
+                                alt={image.alt}
+                                style={styles.image}
+                            />
 
-                    {/* Details Side */}
-                    <div style={styles.details}>
-                        <div style={styles.header}>
-                            <div style={styles.iconActions}>
+                            {/* Top-Left Actions Overlay */}
+                            <div style={styles.overlayActions}>
                                 <button className="btn-icon" onClick={handleShare}><FaShare /></button>
                                 <button className="btn-icon"><FaHeart /></button>
+                                {/* Save button optional here or keep in header? Let's keep minimal icons here */}
                             </div>
-                            <button className="btn btn-primary" onClick={() => alert('Saved!')}>Save</button>
+
+                            {/* Bottom Title Overlay - Only Title */}
+                            <div style={styles.overlayContent}>
+                                <h2 className="overlay-title-text" style={styles.overlayTitle}>{image.title || image.alt}</h2>
+                            </div>
                         </div>
 
-                        <div style={styles.infoContent}>
-                            <h2 style={styles.title}>{image.title || image.alt}</h2>
-
-                            <div style={styles.description}>
+                        {/* Description Below Image - Outside the frame */}
+                        <div style={styles.descriptionContainer}>
+                            <h3 style={styles.descriptionTitle}>{image.title || image.alt}</h3>
+                            <div style={styles.descriptionText}>
                                 {displayDescription}
                                 {shouldTruncate && (
                                     <button
@@ -110,38 +113,41 @@ const ImageDetail = ({ image, onBack, onImageClick }) => {
                                     </button>
                                 )}
                             </div>
-
-                            {!image.description && (
-                                <p style={styles.description}>
-                                    Uploaded by <strong>{image.user.name}</strong>.
-                                    {image.tags.length > 0 && ` Tags: ${image.tags.join(', ')}`}
-                                </p>
-                            )}
-
-                            {/* Comments Section Placeholder */}
-                            <div style={{ marginTop: '24px' }}>
-                                <h3 style={{ fontSize: '18px', marginBottom: '12px' }}>Comments</h3>
-                                <div style={{ color: '#767676' }}>No comments yet! Add one to start the conversation.</div>
-                            </div>
                         </div>
+                    </div>
 
-                        <div style={styles.footer}>
+                    {/* Details Side (Right) - NOW "FEED" */}
+                    <div style={styles.details}>
+                        <div style={styles.header}>
+                            {/* User User Info on top right */}
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 <img src={image.user.avatar} style={{ width: 48, height: 48, borderRadius: '50%' }} alt="User" />
                                 <span style={{ fontWeight: 'bold' }}>{image.user.name}</span>
                             </div>
-                            <button className="btn" style={{ backgroundColor: '#e9e9e9', borderRadius: '24px', padding: '12px 16px' }}>Follow</button>
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                <button className="btn" style={{ backgroundColor: '#e9e9e9', borderRadius: '24px', padding: '12px 16px' }}>Follow</button>
+                                <button className="btn btn-primary" onClick={() => alert('Saved!')}>Save</button>
+                            </div>
                         </div>
+
+                        {/* Title/Desc removed from here, replaced with Suggested Images */}
+                        <div style={styles.infoContent}>
+                            <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '16px' }}>More like this</h3>
+                            {/* Using MasonryGrid with 1-2 columns for larger images in sidebar */}
+                            {relatedImages.length > 0 ? (
+                                <MasonryGrid items={relatedImages} onImageClick={onImageClick} maxColumns={2} initialColumns={1} />
+                            ) : (
+                                <p style={{ color: '#767676' }}>No related images found.</p>
+                            )}
+                        </div>
+
+                        {/* Comments could go here if implemented later */}
+                        {/* <div style={{ marginTop: '24px', borderTop: '1px solid #eee', paddingTop: '20px' }}>
+                             <h3 style={{ fontSize: '18px', marginBottom: '12px' }}>Comments</h3>
+                             <div style={{ color: '#767676' }}>No comments yet!</div>
+                        </div> */}
                     </div>
                 </div>
-
-                {/* Related Images Section */}
-                {relatedImages.length > 0 && (
-                    <div style={styles.relatedSection}>
-                        <h3 style={styles.relatedTitle}>More like this</h3>
-                        <MasonryGrid items={relatedImages} onImageClick={onImageClick} />
-                    </div>
-                )}
             </div>
         </div>
     );
@@ -153,7 +159,7 @@ const styles = {
         minHeight: '100vh',
         backgroundColor: '#fff',
         padding: '20px',
-        boxSizing: 'border-box' // Ensure padding doesn't cause overflow
+        boxSizing: 'border-box'
     },
     backBtn: {
         display: 'flex',
@@ -167,96 +173,134 @@ const styles = {
         padding: '10px 0'
     },
     card: {
-        maxWidth: '1200px',
+        maxWidth: '1400px', // Increased width for better side-by-side view
         margin: '0 auto',
         backgroundColor: 'white',
         borderRadius: '32px',
-        boxShadow: '0 0 20px rgba(0,0,0,0.05)',
+        // boxShadow: '0 0 20px rgba(0,0,0,0.05)', // Removed shadow for flatter feel or keep it
         overflow: 'hidden',
     },
     layout: {
         display: 'flex',
         flexWrap: 'wrap',
         minHeight: '600px',
+        gap: '24px' // Add gap between image and sidebar
     },
     imageContainer: {
-        flex: 1,
-        minWidth: '300px', // Allow it to shrink on mobile but keep base size
-        flexBasis: '400px', // Preferred size
-        backgroundColor: '#fff',
+        flex: 2, // Take up more space
+        minWidth: '350px',
+        flexBasis: '600px',
+        backgroundColor: '#f9f9f9', // Slightly grey background for image area
         display: 'flex',
+        flexDirection: 'column', // Stack image and description vertically
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: '32px'
+        justifyContent: 'flex-start',
+        padding: '0', // Full bleed or controlled padding
+        position: 'relative',
+        borderRadius: '32px', // Rounded corners for the image container itself
+        overflow: 'visible' // Allow description to show outside
     },
     image: {
-        maxWidth: '100%',
-        maxHeight: '80vh',
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover', // Cover to fill the area, or contain if we want to see full image always. Pinterest uses contain usually with dynamic height. Let's use contain for safety.
+        // Actually Pinterest expands height. For this fixed layout, let's try contain but center it.
         objectFit: 'contain',
-        borderRadius: '16px',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+        maxHeight: '85vh',
+        display: 'block'
     },
-    details: {
-        flex: 1, // Allow details to take remaining space
-        minWidth: '300px', // Collapse to stack on small screens
-        flexBasis: '350px',
+    overlayActions: {
+        position: 'absolute',
+        top: '20px',
+        left: '20px',
+        display: 'flex',
+        gap: '12px',
+        zIndex: 10
+    },
+    overlayContent: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        padding: '40px 24px 24px',
+        background: 'linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0))', // Gradient for text readability
+        color: 'white',
+        zIndex: 10,
         display: 'flex',
         flexDirection: 'column',
-        padding: '40px',
-        borderLeft: '1px solid #efefef',
-        backgroundColor: 'white'
+        alignItems: 'flex-start'
     },
-    header: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginBottom: '24px'
-    },
-    iconActions: {
-        display: 'flex',
-        gap: '8px'
-    },
-    infoContent: {
-        flex: 1,
-        marginBottom: '24px'
-    },
-    title: {
+    overlayTitle: {
         fontSize: '32px',
-        fontWeight: 'bold',
-        marginBottom: '12px',
+        fontWeight: 'bold', // Extra bold
+        marginBottom: '8px',
+        textShadow: '0 2px 4px rgba(0,0,0,0.3)'
     },
-    description: {
-        fontSize: '18px',
+    overlayDescription: {
+        fontSize: '16px',
+        lineHeight: '1.5',
+        maxWidth: '80%', // Don't span full width for readability
+        textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+    },
+    descriptionContainer: {
+        width: '100%',
+        padding: '20px 24px',
+        backgroundColor: '#fff',
+        borderRadius: '0 0 32px 32px' // Round bottom corners
+    },
+    descriptionTitle: {
+        fontSize: '24px',
+        fontWeight: '700',
+        color: '#111',
+        marginBottom: '12px',
+        marginTop: '0'
+    },
+    descriptionText: {
+        fontSize: '16px',
+        lineHeight: '1.6',
         color: '#333',
-        lineHeight: '1.5'
+        textAlign: 'left'
     },
     readMoreBtn: {
         background: 'none',
         border: 'none',
-        color: '#111',
+        color: '#e60023', // Pinterest red for emphasis
         fontWeight: 'bold',
         cursor: 'pointer',
         padding: 0,
         marginLeft: '5px',
         textDecoration: 'underline'
     },
-    footer: {
-        borderTop: '1px solid #efefef',
-        paddingTop: '20px',
-        marginTop: 'auto',
+    readMoreBtnLight: {
+        background: 'none',
+        border: 'none',
+        color: '#fff',
+        fontWeight: 'bold',
+        cursor: 'pointer',
+        padding: 0,
+        marginLeft: '5px',
+        textDecoration: 'underline'
+    },
+    details: {
+        flex: 1,
+        minWidth: '300px',
+        flexBasis: '350px',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '24px 0', // Less padding
+        backgroundColor: 'white'
+    },
+    header: {
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: '32px',
+        paddingBottom: '24px',
+        borderBottom: '1px solid #efefef'
     },
-    relatedSection: {
-        padding: '40px',
-        borderTop: '1px solid #eee',
-        backgroundColor: '#fafafa'
-    },
-    relatedTitle: {
-        textAlign: 'center',
-        fontSize: '24px',
-        fontWeight: '600',
-        marginBottom: '32px'
+    infoContent: {
+        flex: 1,
+        overflowY: 'auto' // Allow scrolling if list is long
     }
 };
 

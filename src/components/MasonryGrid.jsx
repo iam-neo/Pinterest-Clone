@@ -2,18 +2,20 @@ import React, { useState, useEffect } from 'react';
 import useMasonry from '../hooks/useMasonry';
 import ImageCard from './ImageCard';
 
-const MasonryGrid = ({ items, onImageClick }) => {
-    // Initial column count
-    const [columnCount, setColumnCount] = useState(5);
+const MasonryGrid = ({ items, onImageClick, initialColumns = 5, maxColumns = 5 }) => {
+    // Initial column count - can be customized via props
+    const [columnCount, setColumnCount] = useState(initialColumns);
 
     // Responsive column count logic
     useEffect(() => {
         const handleResize = () => {
             const width = window.innerWidth;
-            if (width < 600) setColumnCount(2);       // Mobile (Pinterest style)
-            else if (width < 900) setColumnCount(3);  // Tablet
-            else if (width < 1200) setColumnCount(4); // Small Desktop
-            else setColumnCount(5);                   // Large Desktop
+            // For main gallery (maxColumns=5): mobile=2, tablet=3, desktop=4-5
+            // For sidebar (maxColumns=2): mobile=1, tablet=2, desktop=2
+            if (width < 600) setColumnCount(Math.min(2, maxColumns));       // Mobile - 2 cols for main, 1 for sidebar
+            else if (width < 900) setColumnCount(Math.min(3, maxColumns));  // Tablet - 3 cols for main, 2 for sidebar
+            else if (width < 1200) setColumnCount(Math.min(4, maxColumns)); // Small Desktop
+            else setColumnCount(Math.min(maxColumns, maxColumns));          // Large Desktop
         };
 
         // Initial call
@@ -21,7 +23,7 @@ const MasonryGrid = ({ items, onImageClick }) => {
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, [maxColumns]);
 
     const columns = useMasonry(items, columnCount);
 

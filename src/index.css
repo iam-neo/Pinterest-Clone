@@ -188,4 +188,9 @@ body {
   .modal-layout {
     min-height: auto !important;
   }
+
+  /* Smaller overlay title on mobile */
+  .overlay-title-text {
+    font-size: 20px !important;
+  }
 }
