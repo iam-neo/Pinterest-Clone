@@ -27,6 +27,29 @@ const ImageDetail = ({ image, onBack, onImageClick }) => {
         ? image.description
         : `${image.description.slice(0, MAX_LENGTH)}...`;
 
+    // Share handler
+    const handleShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: image.title || 'Pinterest Clone Image',
+                    text: image.description || 'Check out this image!',
+                    url: image.url,
+                });
+            } catch (error) {
+                console.error('Error sharing:', error);
+            }
+        } else {
+            try {
+                await navigator.clipboard.writeText(image.url);
+                alert('Link copied to clipboard!');
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                alert('Failed to copy link. Please manually copy the URL.');
+            }
+        }
+    };
+
     return (
         <div style={styles.container}>
             <button style={styles.backBtn} onClick={onBack}>
@@ -48,7 +71,7 @@ const ImageDetail = ({ image, onBack, onImageClick }) => {
                     <div style={styles.details}>
                         <div style={styles.header}>
                             <div style={styles.iconActions}>
-                                <button className="btn-icon"><FaShare /></button>
+                                <button className="btn-icon" onClick={handleShare}><FaShare /></button>
                                 <button className="btn-icon"><FaHeart /></button>
                             </div>
                             <button className="btn btn-primary" onClick={() => alert('Saved!')}>Save</button>
